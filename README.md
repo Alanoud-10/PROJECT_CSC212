@@ -1,4 +1,5 @@
 **📸 Photo Management Application – CSC212**
+
 A simple Java application to manage photos using tags and albums. All data structures (like LinkedList and BST) are implemented manually without using Java Collections.
 
 **✅ Features**
