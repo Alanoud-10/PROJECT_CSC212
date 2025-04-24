@@ -77,6 +77,7 @@ displayTags(tags);
         // Delete one photo and test result
         System.out.println("\nDelete the photo ’bear.jpg’:");
         manager.deletePhoto("bear.jpg");
+        invmanager.deletePhoto("bear.jpg");
 
 //      Print remaining photos
         System.out.println("\nRemaining photos after deletion:");
