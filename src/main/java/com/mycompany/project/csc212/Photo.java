@@ -13,7 +13,7 @@ package com.mycompany.project.csc212;
 public class Photo {
 
     private String imagePath;
-    private LinkedList<String> photoTags = new LinkedList<>();
+    LinkedList<String> photoTags = new LinkedList<>();
 
     // Constructor
     public Photo(String path, LinkedList<String> tags) {
