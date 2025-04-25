@@ -9,76 +9,87 @@ package com.mycompany.project.csc212;
  * @author alanoud
  */
 public class InvIndexPhotoManager {
-    BST<LinkedList<Photo>> invIndex;
+
+    private BST<LinkedList<Photo>> invertedIndex;
 
     // Constructor
     public InvIndexPhotoManager() {
-        invIndex = new BST<LinkedList<Photo>>();
+        invertedIndex = new BST<>();
     }
 
-    // Add a photo
-    public void insertPhoto(Photo p) {
-        LinkedList<String> tags = p.getTags();
+    // Add a photo to the inverted index
+    public void addPhoto(Photo photo) {
+        // Add under empty key (used internally maybe)
+        if (invertedIndex.findkey(" ")) {
+            LinkedList<Photo> list = invertedIndex.retrieve();
+            list.insert(photo);
+            invertedIndex.update(" ", list);
+        } else {
+            LinkedList<Photo> list = new LinkedList<>();
+            list.insert(photo);
+            invertedIndex.insert(" ", list);
+        }
+
+        // Add using tags
+        LinkedList<String> tags = photo.getTags();
         if (!tags.empty()) {
             tags.findFirst();
-            while (!tags.last()) {
-                if (invIndex.findkey(tags.retrieve())) {
-                    LinkedList<Photo> photosList = invIndex.retrieve();
-                    photosList.insert(p);
-                    invIndex.update(tags.retrieve(), photosList);
+            while (true) {
+                String currentTag = tags.retrieve();
+                LinkedList<Photo> photoList;
+
+                if (invertedIndex.findkey(currentTag)) {
+                    photoList = invertedIndex.retrieve();
                 } else {
-                    LinkedList<Photo> photosList = new LinkedList<Photo>();
-                    photosList.insert(p);
-                    invIndex.insert(tags.retrieve(), photosList);
+                    photoList = new LinkedList<>();
                 }
+
+                photoList.insert(photo);
+                invertedIndex.update(currentTag, photoList);
+
+                if (tags.last()) break;
                 tags.findNext();
             }
-            if (invIndex.findkey(tags.retrieve())) {
-                LinkedList<Photo> photosList = invIndex.retrieve();
-                photosList.insert(p);
-                invIndex.update(tags.retrieve(), photosList);
-            } else {
-                LinkedList<Photo> photosList = new LinkedList<Photo>();
-                photosList.insert(p);
-                invIndex.insert(tags.retrieve(), photosList);
-            }
         }
     }
 
-    // Delete a photo
-    public void removePhoto(String path) {
-    String allTags = invIndex.inOrder();
-    String[] tags = allTags.split(" AND ");
+    // Remove a photo from all tags
+    public void deletePhoto(String path) {
+        String combinedTags = invertedIndex.inOrder();
+        if (combinedTags.isEmpty()) combinedTags = " ";
+        else combinedTags += " AND ";
 
-    for (int i = 0; i < tags.length; i++) {
-        if (invIndex.findkey(tags[i])) {
-            LinkedList<Photo> photosList = invIndex.retrieve();
-            photosList.findFirst();
-            while (!photosList.last()) {
-                if (photosList.retrieve().getPath().compareToIgnoreCase(path) == 0) {
-                    photosList.remove();
-                    break;
+        String[] tagList = combinedTags.split(" AND ");
+
+        for (String tag : tagList) {
+            if (invertedIndex.findkey(tag)) {
+                LinkedList<Photo> photos = invertedIndex.retrieve();
+                photos.findFirst();
+                while (!photos.last()) {
+                    if (photos.retrieve().getPath().equalsIgnoreCase(path)) {
+                        photos.remove();
+                        break;
+                    }
+                    photos.findNext();
+                }
+
+                // Check last item
+                if (photos.retrieve().getPath().equalsIgnoreCase(path)) {
+                    photos.remove();
+                }
+
+                // Update or remove the tag
+                if (photos.getSize() == 0) {
+                    invertedIndex.removeKey(tag);
                 } else {
-                    photosList.findNext();
+                    invertedIndex.update(tag, photos);
                 }
             }
-            if (photosList.retrieve().getPath().compareToIgnoreCase(path) == 0) {
-                photosList.remove();
-            }
-
-            // هنا التعديل الصحيح
-            if (photosList.empty()) {
-                invIndex.removeKey(tags[i]);
-            } else {
-                invIndex.update(tags[i], photosList);
-            }
         }
     }
-}
 
-    // Return the inverted index of all managed photos
-    public BST<LinkedList<Photo>> getIndex() {
-        return invIndex;
+    // Access the whole inverted index
+    public BST<LinkedList<Photo>> getPhotos() {
+        return invertedIndex;
     }
 }
-
