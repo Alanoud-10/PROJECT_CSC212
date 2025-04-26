@@ -45,7 +45,13 @@ public class InvIndexPhotoManager {
                 }
 
                 photoList.insert(photo);
-                invertedIndex.update(currentTag, photoList);
+                //update
+                
+               if (invertedIndex.findkey(currentTag)) {
+                   invertedIndex.update(currentTag, photoList);
+}               else {
+                   invertedIndex.insert(currentTag, photoList);
+}
 
                 if (tags.last()) break;
                 tags.findNext();
