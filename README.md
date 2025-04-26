@@ -24,8 +24,8 @@ InvIndexPhotoManager: Uses a BST for fast tag lookup.
 
 **👥 Team Members**
 
-Member 1: Alanoud khalid Aloraidi
+Member 1: Alanoud Aloraidi
 
-Member 2: [Name]
+Member 2: Hatoon alghmdi
 
-Member 3: [Name]
+Member 3: Renad Alharthe
