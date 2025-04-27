@@ -34,14 +34,16 @@ Photo photo3 = new Photo("orange-butterfly.jpg",toTagsLinkedList("insect,butterf
      Album album2 = new Album("Album2", "animal AND grass", manager, invmanager);
      Album album3 = new Album("Album3", "", manager, invmanager);
         
-// Print paths and tags of a photo
-System.out.println("Get photo1 path and tags:");
-System.out.println("\nphoto1 path: " + photo1.getPath());
-System.out.print("Photo1 Tags: ");
-LinkedList<String> tags = photo1.getTags();
-displayTags(tags);
+// === Test getPath() and getTags() ===
+     System.out.println("Get photo1 path and tags:");
+     System.out.println("\nphoto1 path: " + photo1.getPath());
+     System.out.print("Photo1 Tags: ");
+     LinkedList<String> tags = photo1.getTags();
+     displayTags(tags);
 
-  
+// === Test toString() of Photo ===
+        System.out.println("\n\nTest toString() method of Photo:");
+        System.out.println(photo1.toString());
 
   // === Album 1 Details ===
         System.out.println("\n\n[ Album 1 Info ]");
@@ -73,13 +75,14 @@ displayTags(tags);
         showPhotoPaths(photos);
         System.out.printf("Comparisons made for condition \"%s\": %d\n", album3.getCondition(), album3.getNbComps());
 
-
+      
+        
         // Delete one photo and test result
         System.out.println("\nDelete the photo ’bear.jpg’:");
         manager.deletePhoto("bear.jpg");
         invmanager.deletePhoto("bear.jpg");
-
-//      Print remaining photos
+        
+       //Print remaining photos
         System.out.println("\nRemaining photos after deletion:");
         showPhotoPaths(manager.getPhotos());
 
@@ -88,9 +91,7 @@ displayTags(tags);
         System.out.println("\n\n[ Album 3 After Deletion ]");
         System.out.println("Name       : " + album3.getName());
         System.out.println("Condition  : " + album3.getCondition());
-        //You can get the list of photos in album2 by calling album2.getPhotos().
         photos = album3.getPhotos();
-        //You can write a method that prints the list of photos in album2.
         System.out.println(album3.getCondition());
         System.out.println("Photos     :");
         showPhotoPaths(photos);
